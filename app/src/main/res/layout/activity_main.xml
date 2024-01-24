@@ -45,12 +45,151 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvResult"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/ivNutriscore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSearch" />
+
+    <ImageView
+        android:id="@+id/ivNutriscore"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:src="@drawable/nutriscore_disabled"
+        app:layout_constraintBottom_toTopOf="@id/llNutrientValues"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvResult" />
+
+    <LinearLayout
+        android:id="@+id/llNutrientValues"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSearch"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintTop_toBottomOf="@id/ivNutriscore">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Grasas" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvFatsLow"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvFatsMedium"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvFatsHigh"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Grasas saturadas" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSaturatedFatsLow"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSaturatedFatsMedium"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSaturatedFatsHigh"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Sal" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSaltLow"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSaltMedium"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSaltHigh"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Azúcar" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSugarLow"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSugarMedium"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSugarHigh"
+                style="@style/horizontalBar"
+                android:backgroundTint="@color/gray" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
