@@ -86,18 +86,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvFatsLow"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvFatsMedium"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                android:id="@+id/cvFatsModerate"
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvFatsHigh"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
         </LinearLayout>
 
@@ -115,18 +112,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvSaturatedFatsLow"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvSaturatedFatsMedium"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                android:id="@+id/cvSaturatedFatsModerate"
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvSaturatedFatsHigh"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
         </LinearLayout>
 
@@ -144,18 +138,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvSaltLow"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvSaltMedium"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                android:id="@+id/cvSaltModerate"
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvSaltHigh"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
         </LinearLayout>
 
@@ -173,18 +164,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvSugarLow"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvSugarMedium"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                android:id="@+id/cvSugarModerate"
+                style="@style/horizontalBar" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvSugarHigh"
-                style="@style/horizontalBar"
-                android:backgroundTint="@color/gray" />
+                style="@style/horizontalBar" />
 
         </LinearLayout>
 

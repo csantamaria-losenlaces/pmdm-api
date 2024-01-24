@@ -2,21 +2,34 @@ package com.csantamaria.consumoapis
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.csantamaria.consumoapis.databinding.ActivityMainBinding
 import com.csantamaria.consumoapis.databinding.ItemProductBinding
 import com.squareup.picasso.Picasso
 
-class ProductViewHolder (view: View) : RecyclerView.ViewHolder(view) {
+class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val bindingItemProduct = ItemProductBinding.bind(view)
 
-    fun bind (productItemResponse: ProductDataResponse) {
-        if (productItemResponse.productValues.productName != "") {
-            bindingItemProduct.tvProductName.text = String.format("%s\n%s", productItemResponse.productValues.productName, productItemResponse.productValues.quantity)
+    fun bind(productItemResponse: ProductDataResponse) {
+
+        val productNameText = StringBuilder()
+
+        if (productItemResponse.productValues.productName.isNullOrEmpty()) {
+            productNameText.appendLine(productItemResponse.productValues.productNameAlt)
         } else {
-            bindingItemProduct.tvProductName.text = String.format("%s\n%s", productItemResponse.productValues.productNameAlt, productItemResponse.productValues.quantity)
+            productNameText.appendLine(productItemResponse.productValues.productName)
         }
-        Picasso.get().load(productItemResponse.productValues.imgFront).into(bindingItemProduct.ivProduct)
+
+        if (productItemResponse.productValues.quantity.isNullOrEmpty()) {
+            productNameText.append("(Peso desconocido)")
+        } else {
+            productNameText.append(productItemResponse.productValues.quantity)
+        }
+
+        bindingItemProduct.tvProductName.text = productNameText.toString()
+
+        Picasso.get().load(productItemResponse.productValues.imgFront)
+            .into(bindingItemProduct.ivProduct)
+
     }
 
 }

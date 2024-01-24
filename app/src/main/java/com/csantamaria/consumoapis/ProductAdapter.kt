@@ -4,7 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class ProductAdapter(var productList: List<ProductDataResponse> = emptyList()) : RecyclerView.Adapter<ProductViewHolder>() {
+class ProductAdapter(var productList: List<ProductDataResponse> = emptyList()) :
+    RecyclerView.Adapter<ProductViewHolder>() {
 
     fun updateList(response: ProductDataResponse) {
         productList = listOf(response)

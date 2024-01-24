@@ -6,19 +6,17 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
@@ -28,7 +26,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.Duration
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,19 +43,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ivNutriscore: ImageView
 
     private lateinit var cvFatsLow: CardView
-    private lateinit var cvFatsMedium: CardView
+    private lateinit var cvFatsModerate: CardView
     private lateinit var cvFatsHigh: CardView
 
     private lateinit var cvSaturatedFatsLow: CardView
-    private lateinit var cvSaturatedFatsMedium: CardView
+    private lateinit var cvSaturatedFatsModerate: CardView
     private lateinit var cvSaturatedFatsHigh: CardView
 
     private lateinit var cvSaltLow: CardView
-    private lateinit var cvSaltMedium: CardView
+    private lateinit var cvSaltModerate: CardView
     private lateinit var cvSaltHigh: CardView
 
     private lateinit var cvSugarLow: CardView
-    private lateinit var cvSugarMedium: CardView
+    private lateinit var cvSugarModerate: CardView
     private lateinit var cvSugarHigh: CardView
 
     private lateinit var progressBar: ProgressBar
@@ -84,6 +81,22 @@ class MainActivity : AppCompatActivity() {
 
         ivNutriscore = findViewById(R.id.ivNutriscore)
 
+        cvFatsLow = findViewById(R.id.cvFatsLow)
+        cvFatsModerate = findViewById(R.id.cvFatsModerate)
+        cvFatsHigh = findViewById(R.id.cvFatsHigh)
+
+        cvSaturatedFatsLow = findViewById(R.id.cvSaturatedFatsLow)
+        cvSaturatedFatsModerate = findViewById(R.id.cvSaturatedFatsModerate)
+        cvSaturatedFatsHigh = findViewById(R.id.cvSaturatedFatsHigh)
+
+        cvSaltLow = findViewById(R.id.cvSaltLow)
+        cvSaltModerate = findViewById(R.id.cvSaltModerate)
+        cvSaltHigh = findViewById(R.id.cvSaltHigh)
+
+        cvSugarLow = findViewById(R.id.cvSugarLow)
+        cvSugarModerate = findViewById(R.id.cvSugarModerate)
+        cvSugarHigh = findViewById(R.id.cvSugarHigh)
+
         progressBar = findViewById(R.id.progressBar)
 
         btnSearch.isEnabled = false
@@ -95,11 +108,6 @@ class MainActivity : AppCompatActivity() {
             if (result.contents == null) {
                 Toast.makeText(this, "Se ha cancelado el escaneo", Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(
-                    this,
-                    "Texto leído: " + result.contents,
-                    Toast.LENGTH_LONG
-                ).show()
                 etEAN.setText(result.contents)
                 searchByName(etEAN.text.toString())
             }
@@ -122,7 +130,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnSearch.setOnClickListener {
-            hideKeyboard()
             searchByName(etEAN.text.toString())
         }
 
@@ -147,6 +154,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchByName(query: String) {
+        hideKeyboard()
         progressBar.isVisible = true
         CoroutineScope(Dispatchers.IO).launch {
             val response: Response<ProductDataResponse> =
@@ -157,7 +165,8 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread {
                         adapter.updateList(productDataResponse)
                         updateNutriscore()
-                        updateNutrientValues()
+                        resetNutrientBars()
+                        updateNutrientBars()
                         progressBar.isVisible = false
                     }
                 } else {
@@ -173,8 +182,11 @@ class MainActivity : AppCompatActivity() {
             } else {
                 runOnUiThread {
                     progressBar.isVisible = false
-                    Toast.makeText(applicationContext, "Producto no encontrado", Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Producto no encontrado",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -186,31 +198,272 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateNutriscore() {
-        when (productDataResponse.productValues.nutriscoreGrade) {
-            "a" -> {
-                ivNutriscore.setImageResource(R.drawable.nutriscore_a)
-            }
-
-            "b" -> {
-                ivNutriscore.setImageResource(R.drawable.nutriscore_b)
-            }
-
-            "c" -> {
-                ivNutriscore.setImageResource(R.drawable.nutriscore_c)
-            }
-
-            "d" -> {
-                ivNutriscore.setImageResource(R.drawable.nutriscore_d)
-            }
-
-            "e" -> {
-                ivNutriscore.setImageResource(R.drawable.nutriscore_e)
+        if (!productDataResponse.productValues.nutriscoreGrade.isNullOrEmpty()) {
+            when (productDataResponse.productValues.nutriscoreGrade) {
+                "a" -> ivNutriscore.setImageResource(R.drawable.nutriscore_a)
+                "b" -> ivNutriscore.setImageResource(R.drawable.nutriscore_b)
+                "c" -> ivNutriscore.setImageResource(R.drawable.nutriscore_c)
+                "d" -> ivNutriscore.setImageResource(R.drawable.nutriscore_d)
+                "e" -> ivNutriscore.setImageResource(R.drawable.nutriscore_e)
+                else -> ivNutriscore.setImageResource(R.drawable.nutriscore_disabled)
             }
         }
     }
 
-    private fun updateNutrientValues() {
-        TODO("Not yet implemented")
+    private fun updateNutrientBars() {
+        // Fat
+        if (!productDataResponse.productValues.nutrientsValues.fat.isNullOrEmpty()) {
+            Log.i("Valor de \"fat\"", productDataResponse.productValues.nutrientsValues.fat)
+            when (productDataResponse.productValues.nutrientsValues.fat) {
+                "low" -> {
+                    cvFatsLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                }
+
+                "moderate" -> {
+                    cvFatsLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvFatsModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                }
+
+                "high" -> {
+                    cvFatsLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvFatsModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                    cvFatsHigh.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.high
+                        )
+                    )
+                }
+            }
+        }
+        // Saturated fat
+        if (!productDataResponse.productValues.nutrientsValues.saturatedFat.isNullOrEmpty()) {
+            Log.i(
+                "Valor de \"saturatedFat\"",
+                productDataResponse.productValues.nutrientsValues.saturatedFat
+            )
+            when (productDataResponse.productValues.nutrientsValues.saturatedFat) {
+                "low" -> {
+                    cvSaturatedFatsLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                }
+
+                "moderate" -> {
+                    cvSaturatedFatsLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvSaturatedFatsModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                }
+
+                "high" -> {
+                    cvSaturatedFatsLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvSaturatedFatsModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                    cvSaturatedFatsHigh.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.high
+                        )
+                    )
+                }
+            }
+        }
+        // Salt
+        if (!productDataResponse.productValues.nutrientsValues.salt.isNullOrEmpty()) {
+            Log.i("Valor de \"salt\"", productDataResponse.productValues.nutrientsValues.salt)
+            when (productDataResponse.productValues.nutrientsValues.salt) {
+                "low" -> {
+                    cvSaltLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                }
+
+                "moderate" -> {
+                    cvSaltLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvSaltModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                }
+
+                "high" -> {
+                    cvSaltLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvSaltModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                    cvSaltHigh.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.high
+                        )
+                    )
+                }
+            }
+        }
+        // Sugar
+        if (!productDataResponse.productValues.nutrientsValues.sugar.isNullOrEmpty()) {
+            Log.i("Valor de \"sugar\"", productDataResponse.productValues.nutrientsValues.sugar)
+            when (productDataResponse.productValues.nutrientsValues.sugar) {
+                "low" -> {
+                    cvSugarLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    Log.i("Debug", "Estoy pintando UwU")
+                }
+
+                "moderate" -> {
+                    cvSugarLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvSugarModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                }
+
+                "high" -> {
+                    cvSugarLow.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.low
+                        )
+                    )
+                    cvSugarModerate.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.moderate
+                        )
+                    )
+                    cvSugarHigh.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.high
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun resetNutrientBars() {
+        // Fat
+        cvFatsLow.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        cvFatsModerate.setCardBackgroundColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.gray
+            )
+        )
+        cvFatsHigh.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        // Saturated fat
+        cvSaturatedFatsLow.setCardBackgroundColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.gray
+            )
+        )
+        cvSaturatedFatsModerate.setCardBackgroundColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.gray
+            )
+        )
+        cvSaturatedFatsHigh.setCardBackgroundColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.gray
+            )
+        )
+        // Salt
+        cvSaltLow.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        cvSaltModerate.setCardBackgroundColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.gray
+            )
+        )
+        cvSaltHigh.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        // Sugar
+        cvSugarLow.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        cvSugarModerate.setCardBackgroundColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.gray
+            )
+        )
+        cvSugarHigh.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
     }
 
 }
