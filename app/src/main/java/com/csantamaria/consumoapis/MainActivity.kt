@@ -213,7 +213,6 @@ class MainActivity : AppCompatActivity() {
     private fun updateNutrientBars() {
         // Fat
         if (!productDataResponse.productValues.nutrientsValues.fat.isNullOrEmpty()) {
-            Log.i("Valor de \"fat\"", productDataResponse.productValues.nutrientsValues.fat)
             when (productDataResponse.productValues.nutrientsValues.fat) {
                 "low" -> {
                     cvFatsLow.setCardBackgroundColor(
@@ -263,10 +262,6 @@ class MainActivity : AppCompatActivity() {
         }
         // Saturated fat
         if (!productDataResponse.productValues.nutrientsValues.saturatedFat.isNullOrEmpty()) {
-            Log.i(
-                "Valor de \"saturatedFat\"",
-                productDataResponse.productValues.nutrientsValues.saturatedFat
-            )
             when (productDataResponse.productValues.nutrientsValues.saturatedFat) {
                 "low" -> {
                     cvSaturatedFatsLow.setCardBackgroundColor(
@@ -316,7 +311,6 @@ class MainActivity : AppCompatActivity() {
         }
         // Salt
         if (!productDataResponse.productValues.nutrientsValues.salt.isNullOrEmpty()) {
-            Log.i("Valor de \"salt\"", productDataResponse.productValues.nutrientsValues.salt)
             when (productDataResponse.productValues.nutrientsValues.salt) {
                 "low" -> {
                     cvSaltLow.setCardBackgroundColor(
@@ -366,7 +360,6 @@ class MainActivity : AppCompatActivity() {
         }
         // Sugar
         if (!productDataResponse.productValues.nutrientsValues.sugar.isNullOrEmpty()) {
-            Log.i("Valor de \"sugar\"", productDataResponse.productValues.nutrientsValues.sugar)
             when (productDataResponse.productValues.nutrientsValues.sugar) {
                 "low" -> {
                     cvSugarLow.setCardBackgroundColor(
@@ -375,7 +368,6 @@ class MainActivity : AppCompatActivity() {
                             R.color.low
                         )
                     )
-                    Log.i("Debug", "Estoy pintando UwU")
                 }
 
                 "moderate" -> {
@@ -420,49 +412,22 @@ class MainActivity : AppCompatActivity() {
     private fun resetNutrientBars() {
         // Fat
         cvFatsLow.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
-        cvFatsModerate.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.gray
-            )
-        )
+        cvFatsModerate.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
         cvFatsHigh.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+
         // Saturated fat
-        cvSaturatedFatsLow.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.gray
-            )
-        )
-        cvSaturatedFatsModerate.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.gray
-            )
-        )
-        cvSaturatedFatsHigh.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.gray
-            )
-        )
+        cvSaturatedFatsLow.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        cvSaturatedFatsModerate.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        cvSaturatedFatsHigh.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+
         // Salt
         cvSaltLow.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
-        cvSaltModerate.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.gray
-            )
-        )
+        cvSaltModerate.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
         cvSaltHigh.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
+
         // Sugar
         cvSugarLow.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
-        cvSugarModerate.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.gray
-            )
-        )
+        cvSugarModerate.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
         cvSugarHigh.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.gray))
     }
 
